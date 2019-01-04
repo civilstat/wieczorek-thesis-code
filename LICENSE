@@ -1,4 +1,8 @@
-The Million Song Dataset is released under the same terms of use as The Echo Nest API, based on the dataset's licensing terms available at: https://github.com/tbertinmahieux/MSongsDB/blob/master/LICENSE
+The Million Song Dataset is released under the same terms of use as The Echo Nest API, based on the dataset's licensing terms available at:  
+https://github.com/tbertinmahieux/MSongsDB/blob/master/LICENSE
+
+Tong Zhang's R code for his FoBa algorithm, `greedy.R`, was released under the GNU General Public License v2.0. His original code and documentation are available online at:  
+http://tongzhang-ml.org/software.html
 
 The remaining code, data, and simulation results are released under the GNU General Public License v3.0.
 
