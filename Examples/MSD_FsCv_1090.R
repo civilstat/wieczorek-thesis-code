@@ -55,7 +55,7 @@ system.time({
   Times = rep(0, p+1)
   jj = 0
   lmOld = lm0_1090
-  Times[jj + 1] = newTime[3]
+  Times[jj + 1] = newTime["elapsed"]
   MSEs[jj + 1] = testRMSE(lmOld, MSD_test_1090)^2
   Vars[jj + 1] = "1"
   print(c(jj, "1", MSEs[jj + 1]))
@@ -68,7 +68,7 @@ system.time({
     lmNew = update(lmOld, formula(paste(". ~ . +", newVar)))
     MSEs[jj + 1] = testRMSE(lmNew, MSD_test_1090)^2
   })
-  Times[jj + 1] = newTime[3]
+  Times[jj + 1] = newTime["elapsed"]
   print(c(jj, newVar, MSEs[jj + 1], MSEs[jj + 1] - MSEs[jj]))
   
   ## Repeat as needed
@@ -84,7 +84,7 @@ system.time({
       (lmNew = update(lmOld, formula(paste(". ~ . +", newVar))))
       MSEs[jj + 1] = testRMSE(lmNew, MSD_test_1090)^2
     })
-    Times[jj + 1] = newTime[3]
+    Times[jj + 1] = newTime["elapsed"]
     print(c(jj, newVar, MSEs[jj + 1], MSEs[jj + 1] - MSEs[jj]))
   }
 })
