@@ -1,30 +1,32 @@
 # CV_Functions.R
+
+# Used to generate data
 library(MASS)
 library(leaps)
 library(R.utils) # for doCall()
 library(plyr) # for adply()
-library(ggplot2)
-library(reshape2) # for dcast()
-library(xtable)
 library(doParallel)
 library(Matrix)
+# Used in plotting scripts
+library(ggplot2)
+library(RColorBrewer)
+library(grid)
 
 # Note:
-# Since 6/17/16, we've revised code
-# so that multiSim CANNOT pass arguments
-# to the CV and OMP functions other than the data Y, X.
+# multiSim() CANNOT pass arguments other than the data Y, X
+# to the FS and CV functions.
 # Instead, its whichProcedures argument
 # must give the names of wrapper-functions
 # that are fully-specified except for Y, X,
 # so that Y, X are their only arguments.
 # For example, write a new wrapper such as
-## myCV = function(Y, X) CrossValFS(Y, X, nF = a, nS = B, tr = C)
+## myCV = function(Y, X) FS_CV_K(Y, X, nF = a, nS = B, tr = C)
 # and then pass in
 ## multiSim(---, whichProcedures = "myCV")
 
 # Note:
 # In code below, beta refers to the vector of non-intercept terms;
-# and betaWithInt is the vector augmented with B_0 in the first place.
+# and betaWithInt is the vector augmented with $\beta_0$ as the first element.
 # Similarly for betahat and betahatWithInt.
 
 

@@ -40,9 +40,6 @@
 # to show more of the story, incl. big-K and huge-P results
 # as well as showing FP and FN rates.
 
-library(RColorBrewer)
-library(grid)
-
 
 #### GOOD SIM SETTINGS ####
 

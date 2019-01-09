@@ -116,7 +116,6 @@ summary(simToPlot$procedure)
 # Then use 2 linetypes, dash vs solid,
 # for Seq vs Full.
 # And black lines for KnownK
-library(RColorBrewer)
 brewerColors = c("black", brewer.pal(12, "Paired")[c(2,2,1,1,
                                                      10,10,9,9,
                                                      6,6,5,5)])
