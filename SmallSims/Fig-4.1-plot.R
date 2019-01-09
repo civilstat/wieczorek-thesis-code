@@ -5,11 +5,52 @@
 # CV with large p helps account for
 # post-selection effect of greedy FS
 
+
+
+#### Define functions ####
+
+L2 = function(x) sum(x^2)
+
+genData = function(n = 30, p = 2, B0 = 10) {
+  X = data.frame(matrix(rnorm(p*n), nrow = n))
+  epsilon = rnorm(n)
+  Y = B0 + epsilon
+  return(list(X = X, Y = Y))
+}
+
+# FS with CV (really just a single sample split),
+# training and then reporting test RSS for comparing just these 3 models:
+# 0 (intercept-only model),
+# 1Fixed (intercept and X_1, no matter what the other Xs are), and 
+# 1Greedy (intercept and X_i, where X_i is greedily chosen for max |corr| with Y)
+#
+# Compute training fits and test RSSs for a given Train/Test split:
+FS1CV_OnSplits = function(Y, X, iiTrain, iiTest) {
+  dataset = data.frame(Y, X)
+  
+  # Greedily choose X_i based on training data
+  # whichX = which.max(abs(cor(cbind(Y[iiTrain], X[iiTrain, ])))[1, -1])
+  whichX = which.max(abs(cor(Y[iiTrain], X[iiTrain, ])))
+  
+  # Fit all 3 models on training data
+  trainFit0 = lm(Y ~ 1, dataset[iiTrain, ])
+  trainFit1Fixed = lm(Y ~ ., dataset[iiTrain, c(1, 2)])
+  trainFit1Greedy = lm(Y ~ ., dataset[iiTrain, c(1, whichX+1)])
+  
+  # Compute test error
+  testRss0 = L2(Y[iiTest] - predict(trainFit0, newdata = X[iiTest, ]))
+  testRss1Fixed = L2(Y[iiTest] - predict(trainFit1Fixed, newdata = X[iiTest, ]))
+  testRss1Greedy = L2(Y[iiTest] - predict(trainFit1Greedy, newdata = X[iiTest, ]))
+  
+  # Return test errors to be compared
+  c(testRss1Fixed = testRss1Fixed,
+    testRss0 = testRss0,
+    testRss1Greedy = testRss1Greedy)
+}
+
+
+
 #### Setup ####
-
-source("./Functions/CrossValidation_Functions.R")
-source("./Functions/CrossValidation_HighSnrHighP_Functions.R")
-
 
 # Sometimes, we'll find
 # testRss1Fixed < testRss0,
