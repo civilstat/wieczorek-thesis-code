@@ -680,6 +680,16 @@ Sigma.NegKPosOthers = function(p = 6, mu = 0.1, K = 5, SigmaApprox = FALSE){
   return(Sigma)
 }
 
+# Generate Sigma: Toeplitz with power decay
+# (ones on diagonal, then constant off-diagonals decreasing geometrically)
+Sigma.Toeplitz = function(p = 6, mu = 0.1, fac = 1 - mu){
+  stopifnot(0 < p)
+  stopifnot(0 < mu & mu < 1)
+  stopifnot(0 < fac & fac < 1)
+  topRow = c(1, mu * fac^(0:(p-2)))
+  Sigma = toeplitz(topRow)
+  return(Sigma)
+}
 
 
 # Generate X matrix: Normal with 0 mean and variance Sigma,
@@ -705,6 +715,18 @@ epsilon.Normal = function(n = 115, sigma = 1, rescaleByN = TRUE){
   return(rnorm(n, mean = 0, sd = sd))
 }
 
+
+# Generate epsilon: t with 3 df,
+# rescaled by variance of n such draws
+# (to have approximate unit L2 length on average)
+# ...unless rescaleByN = FALSE, then variance is sigma^2 (1 by default)
+epsilon.t3 = function(n = 115, sigma = 1, rescaleByN = TRUE){
+  stopifnot(1 <= n)
+  # When df > 2, variance of t is [df / (df - 2)]
+  # so here each entry's variance is 3.
+  fac = ifelse(rescaleByN, n * 3 / sigma^2, 3 / sigma^2)
+  return(rt(n, df = 3) / sqrt(fac))
+}
 
 # Generate epsilon: t with 2 df.
 # Not going to try rescaling to unit variance here,
